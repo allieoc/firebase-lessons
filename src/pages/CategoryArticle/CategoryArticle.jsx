@@ -3,17 +3,16 @@ import './CategoryArticle.css'
 import { useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../config/firebaseConfig';
+import ArticleCard from '../../components/ArticleCard/ArticleCard';
 
 function CategoryArticle() {
 
   const {categoryName} = useParams();
-
   const [articles, setArticles] = useState([]);
 
   useEffect(()=>{
     //create a reference to firestore db collection
     const articleRef = collection(db, "Articles");
-
     // now create query 
     const q = query(articleRef, where("category", "==", categoryName));
 
@@ -23,7 +22,6 @@ function CategoryArticle() {
         ...item.data(),
         id: item.id
     }));
-    //console.log(articles);
     setArticles(articles);
     })
   }, [categoryName])
@@ -32,9 +30,7 @@ function CategoryArticle() {
     <div>
       {
       articles.map(item => 
-      <h2 key={item?.id}>
-        {item?.title}
-      </h2>)
+      <ArticleCard article={item} />)
       }
     </div>
   )

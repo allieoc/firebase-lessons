@@ -3,8 +3,13 @@ import './Header.css'
 import {FaHome} from "react-icons/fa"
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '../../config/firebaseConfig'
+import { signOut } from 'firebase/auth'
 
 function Header() {
+
+    const [user] = useAuthState(auth);
 
     const categories = ["Health", "Food", "Travel", "Technology"]
 
@@ -21,6 +26,18 @@ function Header() {
                     </Link>)
             }
         </div>
+        {
+                user ? <div>
+                        <span className="username">
+                            {user?.displayName}
+                        </span>
+                        <button onClick={()=>signOut(auth)} className="auth-link">
+                            Log Out
+                        </button>
+                    </div>
+                    :
+                    <Link to="/auth" className="auth-link">Sign Up</Link>
+            }
     </div>
   )
 }
