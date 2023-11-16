@@ -2,18 +2,23 @@ import React from 'react'
 import './Header.css'
 import {FaHome} from "react-icons/fa"
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
 
     const categories = ["Health", "Food", "Travel", "Technology"]
 
+    const navigate = useNavigate();
+
   return (
     <div className="header-container">
-        <FaHome />
+        <FaHome onClick={() => navigate('/')} />
         <div className="categories-container">
             {
                 categories.map(item => 
-                    <Link className="nav-link" to={`/category/${item}`}>{item}</Link>)
+                    <Link className="nav-link" to={`/category/${item}`} key={item}>
+                        {item}
+                    </Link>)
             }
         </div>
     </div>
